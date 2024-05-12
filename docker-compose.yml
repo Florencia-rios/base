@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+
+  boletines-oficiales:
+    ports:
+      - "8083:8083"
+    build:
+      context: ./BACK-boletines-oficiales
+    container_name: boletines-oficiales-service
+    networks:
+      - boletines-oficiales-network
+    restart: "no"
+    environment:
+      - PORT=8083
+      - DB_HOST=sql-server-host:1433
+      - DB_NAME=boletinesoficiales
+      - DB_USERNAME=sa
+      - DB_PASSWORD=Password12345
+    depends_on:
+      sql-server:
+        condition: service_healthy
+
+  sql-server:
+    # image: mcr.microsoft.com/mssql/server:latest
+    container_name: sql-server-host
+    build:
+      context: .
+      dockerfile: data/Dockerfile
+    restart: "no"
+    environment:
+      MSSQL_SA_PASSWORD: Password12345
+      ACCEPT_EULA: Y
+      # MSSQL_DATA_DIR: /var/opt/sqlserver/data
+      # MSSQL_LOG_DIR: /var/opt/sqlserver/log
+      # MSSQL_BACKUP_DIR: /var/opt/sqlserver/backup
+    ports:
+      - "1433:1433"
+    networks:
+      - boletines-oficiales-network
+
+networks:
+  boletines-oficiales-network:
+    driver: bridge
