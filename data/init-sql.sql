@@ -52,7 +52,7 @@ CREATE TABLE [core].[nacionalidades] (
 )
 GO
 
-CREATE TABLE [user].[sociedades] (
+CREATE TABLE [user].[sociedad] (
     [id] INTEGER PRIMARY KEY IDENTITY(1, 1),
     [mor_user] VARCHAR(10),
     [mor_nro_user] VARCHAR(10),
@@ -97,20 +97,20 @@ CREATE TABLE [user].[sociedades] (
 )
 GO
 
-ALTER TABLE [user].[sociedades] ADD FOREIGN KEY ([mor_sexo_id]) REFERENCES [core].[sexo]([id])
+ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_sexo_id]) REFERENCES [core].[sexo]([id])
 GO
 
-ALTER TABLE [user].[sociedades] ADD FOREIGN KEY ([mor_prov_id]) REFERENCES [core].[provincias]([id])
+ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_prov_id]) REFERENCES [core].[provincias]([id])
 GO
 
-ALTER TABLE [user].[sociedades] ADD FOREIGN KEY ([mor_est_civil_id]) REFERENCES [core].[estado_civil]([id])
+ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_est_civil_id]) REFERENCES [core].[estado_civil]([id])
 GO
 
-ALTER TABLE [user].[sociedades] ADD FOREIGN KEY ([mor_nacionalidad_id]) REFERENCES [core].[nacionalidades]([id])
+ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_nacionalidad_id]) REFERENCES [core].[nacionalidades]([id])
 GO
 
-ALTER TABLE [user].[sociedades] ADD FOREIGN KEY ([mor_cargo_id]) REFERENCES [core].[cargos]([id])
+ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_cargo_id]) REFERENCES [core].[cargos]([id])
 GO
 
-ALTER TABLE [user].[sociedades] ADD FOREIGN KEY ([mor_cargo_fuente_id]) REFERENCES [core].[fuente_informacion]([id])
+ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_cargo_fuente_id]) REFERENCES [core].[fuente_informacion]([id])
 GO
