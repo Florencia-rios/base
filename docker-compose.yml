@@ -13,29 +13,39 @@ services:
     restart: "no"
     environment:
       - PORT=8083
-      - DB_HOST=sql-server-host:1433
-      - DB_NAME=boletinesoficiales
-      - DB_USERNAME=sa
+      - DB_HOST=postgresql-host
+      - DB_PORT=5432
+      - DB_DATABASE=boletinesoficiales
+      - DB_USERNAME=postgres
       - DB_PASSWORD=Password12345
     depends_on:
-      sql-server:
+      postgresql:
         condition: service_healthy
 
-  sql-server:
-    # image: mcr.microsoft.com/mssql/server:latest
-    container_name: sql-server-host
+  nlp-boletines-oficiales:
+    ports:
+      - "8084:8084"
+    build:
+      context: ./NLP-boletines-oficiales
+    container_name: nlp-boletines-oficiales-service
+    networks:
+      - boletines-oficiales-network
+    restart: "no"
+    environment:
+      - OPENAI_API_KEY=drios_api_key
+
+  postgresql:
+    container_name: postgresql-host
     build:
       context: .
       dockerfile: data/Dockerfile
     restart: "no"
     environment:
-      MSSQL_SA_PASSWORD: Password12345
-      ACCEPT_EULA: Y
-      # MSSQL_DATA_DIR: /var/opt/sqlserver/data
-      # MSSQL_LOG_DIR: /var/opt/sqlserver/log
-      # MSSQL_BACKUP_DIR: /var/opt/sqlserver/backup
+      - POSTGRES_DB=boletinesoficiales
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Password12345
     ports:
-      - "1433:1433"
+      - "5432:5432"
     networks:
       - boletines-oficiales-network
 

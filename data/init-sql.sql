@@ -1,116 +1,189 @@
-CREATE DATABASE [boletinesoficiales]
-GO
+DO $$
+BEGIN
+   PERFORM dblink_exec('dbname=postgres', 'CREATE DATABASE boletinesoficiales');
+END
+$$;
 
-USE [boletinesoficiales]
-GO
+\c boletinesoficiales
 
-CREATE SCHEMA [core]
-GO
+CREATE TABLE cargos (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(30),
+  codigo VARCHAR(2)
+);
 
-CREATE SCHEMA [user]
-GO
+CREATE TABLE estado_civil (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(30),
+  codigo VARCHAR(1)
+);
 
-CREATE TABLE [core].[cargos] (
-  [id] INTEGER PRIMARY KEY IDENTITY(1, 1),
-  [nombre] varchar(30),
-  [codigo] varchar(2)
-)
-GO
+CREATE TABLE provincias (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(30),
+  codigo VARCHAR(1)
+);
 
-CREATE TABLE [core].[estado_civil] (
-  [id] INTEGER PRIMARY KEY IDENTITY(1, 1),
-  [nombre] varchar(30),
-  [codigo] varchar(1)
-)
-GO
+CREATE TABLE sexo (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(30),
+  codigo VARCHAR(1)
+);
 
-CREATE TABLE [core].[fuente_informacion] (
-  [id] INTEGER PRIMARY KEY IDENTITY(1, 1),
-  [nombre] varchar(30),
-  [codigo] varchar(3)
-)
-GO
+CREATE TABLE nacionalidades (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(30),
+  codigo VARCHAR(2)
+);
 
-CREATE TABLE [core].[provincias] (
-  [id] INTEGER PRIMARY KEY IDENTITY(1, 1),
-  [nombre] varchar(30),
-  [codigo] varchar(1)
-)
-GO
+CREATE TABLE sociedad (
+  id SERIAL PRIMARY KEY,
+  mor_user VARCHAR(10),
+  mor_nro_user VARCHAR(10),
+  mor_lote VARCHAR(10),
+  mor_codint INT,
+  mor_matriz VARCHAR(10),
+  mor_sucursal VARCHAR(10),
+  mor_sector VARCHAR(10),
+  mor_cliente VARCHAR(10),
+  mor_nombre_completo VARCHAR(72),
+  mor_fecha_nac VARCHAR(10),
+  mor_sexo_id INT,
+  mor_documento1 VARCHAR(11),
+  mor_documento2 VARCHAR(11),
+  mor_prov_doc2 VARCHAR(1),
+  mor_telefono VARCHAR(14),
+  mor_marca_dire_1 VARCHAR(1),
+  mor_calle VARCHAR(40),
+  mor_numer VARCHAR(10),
+  mor_piso VARCHAR(6),
+  mor_loca VARCHAR(36),
+  mor_prov_id INT,
+  mor_cp VARCHAR(8),
+  mor_est_civil_id INT,
+  mor_nacionalidad_id INT,
+  mor_relacion VARCHAR(1),
+  mor_cargo_id INT,
+  mor_cargo_fecha VARCHAR(10),
+  mor_cargo_fuente VARCHAR(3),
+  mor_ant_codigo VARCHAR(3),
+  mor_campo_1 VARCHAR(20),
+  mor_campo_2 VARCHAR(20),
+  mor_campo_3 VARCHAR(20),
+  mor_campo_4 VARCHAR(20),
+  mor_campo_5 VARCHAR(20),
+  mor_campo_6 VARCHAR(20),
+  mor_campo_7 VARCHAR(20),
+  mor_campo_8 VARCHAR(20),
+  mor_ant_fecha VARCHAR(10),
+  mor_archivo VARCHAR(72),
+  mor_soc_categoria VARCHAR(3),
+  fecha_insercion_boletin VARCHAR,
+  boletin_oficial BYTEA
+);
 
-CREATE TABLE [core].[sexo] (
-  [id] INTEGER PRIMARY KEY IDENTITY(1, 1),
-  [nombre] varchar(30),
-  [codigo] varchar(1)
-)
-GO
+ALTER TABLE sociedad ADD FOREIGN KEY (mor_sexo_id) REFERENCES sexo(id);
+ALTER TABLE sociedad ADD FOREIGN KEY (mor_prov_id) REFERENCES provincias(id);
+ALTER TABLE sociedad ADD FOREIGN KEY (mor_est_civil_id) REFERENCES estado_civil(id);
+ALTER TABLE sociedad ADD FOREIGN KEY (mor_nacionalidad_id) REFERENCES nacionalidades(id);
+ALTER TABLE sociedad ADD FOREIGN KEY (mor_cargo_id) REFERENCES cargos(id);
 
-CREATE TABLE [core].[nacionalidades] (
-  [id] INTEGER PRIMARY KEY IDENTITY(1, 1),
-  [nombre] varchar(30),
-  [codigo] varchar(2)
-)
-GO
+-- Inserts para la tabla cargos
+INSERT INTO cargos (nombre, codigo) VALUES
+('AB', 'ABSORBIDA'),
+('GT', 'GERENTE'),
+('DT', 'Director Titular'),
+('PR', 'Presidente'),
+('LR', 'Representante Legal'),
+('SA', 'Socio Solidario'),
+('SB', 'Socio Comanditado'),
+('SC', 'Socio Comanditario'),
+('SG', 'Socio Gerente'),
+('SO', 'UNICAMENTE PARA SOCIEDADES DE HECHO Y COLECTIVA'),
+('DA', 'DENOMINACION ANTERIOR'),
+('ES', 'ESCINDIDA'),
+('V0', 'Vicepresidente'),
+('V1', 'Vicepresidente Primero'),
+('V2', 'Vicepresidente Segundo'),
+('V3', 'Vicepresidente Tercero'),
+('V4', 'Vicepresidente Cuarto'),
+('ZZ', 'Fallecido'),
+('FU', 'FUSION'),
+('UT', 'UTE');
 
-CREATE TABLE [user].[sociedad] (
-    [id] INTEGER PRIMARY KEY IDENTITY(1, 1),
-    [mor_user] VARCHAR(10),
-    [mor_nro_user] VARCHAR(10),
-    [mor_lote] VARCHAR(10),
-    [mor_codint] INT,
-    [mor_matriz] VARCHAR(10),
-    [mor_sucursal] VARCHAR(10),
-    [mor_sector] VARCHAR(10),
-    [mor_cliente] VARCHAR(10),
-    [mor_nombre_completo] VARCHAR(72),
-    [mor_fecha_nac] VARCHAR(10),
-    [mor_sexo_id] INTEGER,
-    [mor_documento1] VARCHAR(11),
-    [mor_documento2] VARCHAR(11),
-    [mor_prov_doc2] VARCHAR(1),
-    [mor_telefono] VARCHAR(14),
-    [mor_marca_dire_1] VARCHAR(1),
-    [mor_calle] VARCHAR(40),
-    [mor_numer] VARCHAR(10),
-    [mor_piso] VARCHAR(6),
-    [mor_loca] VARCHAR(36),
-    [mor_prov_id] INTEGER,
-    [mor_cp] VARCHAR(8),
-    [mor_est_civil_id] INTEGER,
-    [mor_nacionalidad_id] INTEGER,
-    [mor_relacion] VARCHAR(1),
-    [mor_cargo_id] INTEGER,
-    [mor_cargo_fecha] VARCHAR(10),
-    [mor_cargo_fuente_id] INTEGER,
-    [mor_ant_codigo] VARCHAR(3) DEFAULT 'XXX',
-    [mor_campo_1] VARCHAR(20),
-    [mor_campo_2] VARCHAR(20),
-    [mor_campo_3] VARCHAR(20),
-    [mor_campo_4] VARCHAR(20),
-    [mor_campo_5] VARCHAR(20),
-    [mor_campo_6] VARCHAR(20),
-    [mor_campo_7] VARCHAR(20),
-    [mor_campo_8] VARCHAR(20),
-    [mor_ant_fecha] VARCHAR(10),
-    [mor_archivo] VARCHAR(72),
-    [mor_soc_categoria] VARCHAR(3)
-)
-GO
+-- Inserts para la tabla estado_civil
+INSERT INTO estado_civil (nombre, codigo) VALUES 
+('S', 'Soltero'),
+('C', 'Casado'),
+('D', 'Divorciado');
 
-ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_sexo_id]) REFERENCES [core].[sexo]([id])
-GO
+-- Inserts para la tabla provincias
+INSERT INTO provincias (nombre, codigo) VALUES
+('A', 'SALTA'),
+('B', 'BUENOS AIRES'),
+('C', 'CAPITAL FEDERAL'),
+('D', 'SAN LUIS'),
+('E', 'ENTRE RIOS'),
+('F', 'LA RIOJA'),
+('G', 'SANTIAGO DEL ESTERO'),
+('H', 'CHACO'),
+('J', 'SAN JUAN'),
+('K', 'CATAMARCA'),
+('L', 'LA PAMPA'),
+('M', 'MENDOZA'),
+('N', 'MISIONES'),
+('P', 'FORMOSA'),
+('Q', 'NEUQUEN'),
+('R', 'RIO NEGRO'),
+('S', 'SANTA FE'),
+('T', 'TUCUMAN'),
+('U', 'CHUBUT'),
+('V', 'TIERRA DEL FUEGO'),
+('W', 'CORRIENTES'),
+('X', 'CORDOBA'),
+('Y', 'JUJUY'),
+('Z', 'SANTA CRUZ');
 
-ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_prov_id]) REFERENCES [core].[provincias]([id])
-GO
+-- Inserts para la tabla sexo
+INSERT INTO sexo (nombre, codigo) VALUES
+('MASCULINO', 'M'),
+('FEMENINO', 'F'),
+('NO APORTADO', 'I'),
+('SOCIEDAD', 'S');
 
-ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_est_civil_id]) REFERENCES [core].[estado_civil]([id])
-GO
+-- Inserts para la tabla nacionalidades
+INSERT INTO nacionalidades (nombre, codigo) VALUES
+('A', 'ARGENTINA'),
+('AL', 'ALEMANIA'),
+('AU', 'AUSTRALIA'),
+('BO', 'BOLIVIA'),
+('BR', 'BRASIL'),
+('C', 'COLOMBIA'),
+('CB', 'CUBA'),
+('CD', 'CANADA'),
+('CE', 'CHECOSLOVAQUIA'),
+('CH', 'CHILE'),
+('CN', 'CHINA'),
+('E', 'ESPAÑA'),
+('EC', 'ECUADOR'),
+('F', 'FRANCIA'),
+('GB', 'GRAN BRETAÑA'),
+('H', 'HOLANDA'),
+('I', 'ITALIA'),
+('IR', 'IRLANDA'),
+('J', 'JAPON'),
+('K', 'KOREA'),
+('M', 'MEXICO'),
+('O', 'EXTRANJERO'),
+('P', 'PERU'),
+('PG', 'PORTUGAL'),
+('PR', 'PARAGUAY'),
+('S', 'SUECIA'),
+('SZ', 'SUIZA'),
+('TW', 'TAIWAN'),
+('U', 'URUGUAY'),
+('US', 'ESTADOS UNIDOS'),
+('XX', 'EXTRANJERO'),
+('YU', 'YUGOSLAVIA');
 
-ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_nacionalidad_id]) REFERENCES [core].[nacionalidades]([id])
-GO
-
-ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_cargo_id]) REFERENCES [core].[cargos]([id])
-GO
-
-ALTER TABLE [user].[sociedad] ADD FOREIGN KEY ([mor_cargo_fuente_id]) REFERENCES [core].[fuente_informacion]([id])
-GO
+COMMIT;

@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/mssql/server:latest
+FROM postgres:latest
 
-COPY ./data .
+COPY ./data /docker-entrypoint-initdb.d/
 
 HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=10 \
-CMD /opt/mssql-tools/bin/sqlcmd -S . -U sa -P ${MSSQL_SA_PASSWORD} -i init-sql.sql || exit 1
+  CMD pg_isready -U $POSTGRES_USER || exit 1
