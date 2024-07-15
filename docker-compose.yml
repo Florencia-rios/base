@@ -26,13 +26,16 @@ services:
     ports:
       - "8084:8084"
     build:
-      context: ./NLP-boletines-oficiales
+      context: .
+      dockerfile: ./NLP-boletines-oficiales/Dockerfile
     container_name: nlp-boletines-oficiales-service
     networks:
       - boletines-oficiales-network
     restart: "no"
     environment:
       - OPENAI_API_KEY=drios_api_key
+    volumes:
+      - ./NLP-boletines-oficiales:/var/sources/NLP-boletines-oficiales
 
   postgresql:
     container_name: postgresql-host
