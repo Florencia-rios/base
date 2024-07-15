@@ -22,6 +22,18 @@ services:
       postgresql:
         condition: service_healthy
 
+  nlp-boletines-oficiales:
+    ports:
+      - "8084:8084"
+    build:
+      context: ./NLP-boletines-oficiales
+    container_name: nlp-boletines-oficiales-service
+    networks:
+      - boletines-oficiales-network
+    restart: "no"
+    environment:
+      - OPENAI_API_KEY=drios_api_key
+
   postgresql:
     container_name: postgresql-host
     build:
