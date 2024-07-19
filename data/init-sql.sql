@@ -8,32 +8,32 @@ $$;
 
 CREATE TABLE cargos (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(30),
-  codigo VARCHAR(2)
+  codigo VARCHAR(2),
+  nombre VARCHAR(30)
 );
 
 CREATE TABLE estado_civil (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(30),
-  codigo VARCHAR(1)
+  codigo VARCHAR(1),
+  nombre VARCHAR(30)
 );
 
 CREATE TABLE provincias (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(30),
-  codigo VARCHAR(1)
+  codigo VARCHAR(1),
+  nombre VARCHAR(30)
 );
 
 CREATE TABLE sexo (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(30),
-  codigo VARCHAR(1)
+  codigo VARCHAR(1),
+  nombre VARCHAR(30)
 );
 
 CREATE TABLE nacionalidades (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(30),
-  codigo VARCHAR(2)
+  codigo VARCHAR(2),
+  nombre VARCHAR(30)
 );
 
 CREATE TABLE sociedad (
@@ -89,7 +89,7 @@ ALTER TABLE sociedad ADD FOREIGN KEY (mor_nacionalidad_id) REFERENCES nacionalid
 ALTER TABLE sociedad ADD FOREIGN KEY (mor_cargo_id) REFERENCES cargos(id);
 
 -- Inserts para la tabla cargos
-INSERT INTO cargos (nombre, codigo) VALUES
+INSERT INTO cargos (codigo, nombre) VALUES
 ('AB', 'ABSORBIDA'),
 ('GT', 'GERENTE'),
 ('DT', 'Director Titular'),
@@ -112,13 +112,13 @@ INSERT INTO cargos (nombre, codigo) VALUES
 ('UT', 'UTE');
 
 -- Inserts para la tabla estado_civil
-INSERT INTO estado_civil (nombre, codigo) VALUES 
+INSERT INTO estado_civil (codigo, nombre) VALUES
 ('S', 'Soltero'),
 ('C', 'Casado'),
 ('D', 'Divorciado');
 
 -- Inserts para la tabla provincias
-INSERT INTO provincias (nombre, codigo) VALUES
+INSERT INTO provincias (codigo, nombre) VALUES
 ('A', 'SALTA'),
 ('B', 'BUENOS AIRES'),
 ('C', 'CAPITAL FEDERAL'),
@@ -145,14 +145,14 @@ INSERT INTO provincias (nombre, codigo) VALUES
 ('Z', 'SANTA CRUZ');
 
 -- Inserts para la tabla sexo
-INSERT INTO sexo (nombre, codigo) VALUES
+INSERT INTO sexo (codigo, nombre) VALUES
 ('MASCULINO', 'M'),
 ('FEMENINO', 'F'),
 ('NO APORTADO', 'I'),
 ('SOCIEDAD', 'S');
 
 -- Inserts para la tabla nacionalidades
-INSERT INTO nacionalidades (nombre, codigo) VALUES
+INSERT INTO nacionalidades (codigo, nombre) VALUES
 ('A', 'ARGENTINA'),
 ('AL', 'ALEMANIA'),
 ('AU', 'AUSTRALIA'),
