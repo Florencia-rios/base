@@ -1,6 +1,15 @@
+-- Instalar la extensión dblink
+CREATE EXTENSION dblink;
+
 DO $$
 BEGIN
-   PERFORM dblink_exec('dbname=postgres', 'CREATE DATABASE boletinesoficiales');
+   -- Verifica si la base de datos ya existe
+   IF NOT EXISTS (
+       SELECT FROM pg_database
+       WHERE datname = 'boletinesoficiales'
+   ) THEN
+      PERFORM dblink_exec('dbname=postgres', 'CREATE DATABASE boletinesoficiales');
+   END IF;
 END
 $$;
 
@@ -9,7 +18,7 @@ $$;
 CREATE TABLE cargos (
   id SERIAL PRIMARY KEY,
   codigo VARCHAR(2),
-  nombre VARCHAR(30)
+  nombre VARCHAR(50)
 );
 
 CREATE TABLE estado_civil (
@@ -145,7 +154,7 @@ INSERT INTO provincias (codigo, nombre) VALUES
 ('Z', 'SANTA CRUZ');
 
 -- Inserts para la tabla sexo
-INSERT INTO sexo (codigo, nombre) VALUES
+INSERT INTO sexo (nombre, codigo) VALUES
 ('MASCULINO', 'M'),
 ('FEMENINO', 'F'),
 ('NO APORTADO', 'I'),

@@ -7,7 +7,7 @@ services:
       - "8083:8083"
     build:
       context: ./BACK-boletines-oficiales
-    container_name: boletines-oficiales-service
+    container_name: boletines-oficiales
     networks:
       - boletines-oficiales-network
     restart: "no"
@@ -19,25 +19,25 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=Password12345
     depends_on:
-      postgresql:
+      postgresql-host:
         condition: service_healthy
 
   nlp-boletines-oficiales:
     ports:
-      - "8084:8084"
+      - "8084:8080"
     build:
       context: .
       dockerfile: ./NLP-boletines-oficiales/Dockerfile
-    container_name: nlp-boletines-oficiales-service
+    container_name: nlp-boletines-oficiales
     networks:
       - boletines-oficiales-network
     restart: "no"
     environment:
       - OPENAI_API_KEY=drios_api_key
     volumes:
-      - ./NLP-boletines-oficiales:/var/sources/NLP-boletines-oficiales
+      - ./NLP-boletines-oficiales:/app/NLP-boletines-oficiales
 
-  postgresql:
+  postgresql-host:
     container_name: postgresql-host
     build:
       context: .
@@ -51,7 +51,11 @@ services:
       - "5432:5432"
     networks:
       - boletines-oficiales-network
-
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./data/init-sql.sql:/docker-entrypoint-initdb.d/init-sql.sql
 networks:
   boletines-oficiales-network:
     driver: bridge
+volumes:
+  db_data:
