@@ -116,9 +116,9 @@ INSERT INTO cargos (codigo, nombre) VALUES
 ('V2', 'Vicepresidente Segundo'),
 ('V3', 'Vicepresidente Tercero'),
 ('V4', 'Vicepresidente Cuarto'),
-('ZZ', 'Fallecido'),
 ('FU', 'FUSION'),
-('UT', 'UTE');
+('UT', 'UTE'),
+('DO', 'Directivo');
 
 -- Inserts para la tabla estado_civil
 INSERT INTO estado_civil (codigo, nombre) VALUES
