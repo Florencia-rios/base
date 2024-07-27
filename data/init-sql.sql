@@ -18,51 +18,51 @@ $$;
 CREATE TABLE cargos (
   id SERIAL PRIMARY KEY,
   codigo VARCHAR(2),
-  nombre VARCHAR(50)
+  nombre VARCHAR
 );
 
 CREATE TABLE estado_civil (
   id SERIAL PRIMARY KEY,
   codigo VARCHAR(1),
-  nombre VARCHAR(30)
+  nombre VARCHAR
 );
 
 CREATE TABLE provincias (
   id SERIAL PRIMARY KEY,
   codigo VARCHAR(1),
-  nombre VARCHAR(30)
+  nombre VARCHAR
 );
 
 CREATE TABLE sexo (
   id SERIAL PRIMARY KEY,
   codigo VARCHAR(1),
-  nombre VARCHAR(30)
+  nombre VARCHAR
 );
 
 CREATE TABLE nacionalidades (
   id SERIAL PRIMARY KEY,
   codigo VARCHAR(2),
-  nombre VARCHAR(30)
+  nombre VARCHAR
 );
 
 CREATE TABLE sociedad (
   id SERIAL PRIMARY KEY,
-  mor_user VARCHAR(10),
-  mor_nro_user VARCHAR(10),
-  mor_lote VARCHAR(10),
+  mor_user VARCHAR,
+  mor_nro_user VARCHAR DEFAULT '62',
+  mor_lote VARCHAR DEFAULT '0',
   mor_codint INT,
-  mor_matriz VARCHAR(10),
-  mor_sucursal VARCHAR(10),
-  mor_sector VARCHAR(10),
-  mor_cliente VARCHAR(10),
-  mor_nombre_completo VARCHAR(72),
+  mor_matriz VARCHAR DEFAULT 'AA0029',
+  mor_sucursal VARCHAR DEFAULT '9999',
+  mor_sector VARCHAR,
+  mor_cliente VARCHAR DEFAULT '',
+  mor_nombre_completo VARCHAR(72) NOT NULL,
   mor_fecha_nac VARCHAR(10),
   mor_sexo_id INT,
   mor_documento1 VARCHAR(11),
-  mor_documento2 VARCHAR(11),
-  mor_prov_doc2 VARCHAR(1),
+  mor_documento2 VARCHAR(11) DEFAULT '',
+  mor_prov_doc2_id INT,
   mor_telefono VARCHAR(14),
-  mor_marca_dire_1 VARCHAR(1),
+  mor_marca_dire_1 VARCHAR(1) DEFAULT 'S',
   mor_calle VARCHAR(40),
   mor_numer VARCHAR(10),
   mor_piso VARCHAR(6),
@@ -71,27 +71,28 @@ CREATE TABLE sociedad (
   mor_cp VARCHAR(8),
   mor_est_civil_id INT,
   mor_nacionalidad_id INT,
-  mor_relacion VARCHAR(1),
+  mor_relacion VARCHAR(1) DEFAULT '',
   mor_cargo_id INT,
   mor_cargo_fecha VARCHAR(10),
-  mor_cargo_fuente VARCHAR(3),
-  mor_ant_codigo VARCHAR(3),
-  mor_campo_1 VARCHAR(20),
-  mor_campo_2 VARCHAR(20),
-  mor_campo_3 VARCHAR(20),
-  mor_campo_4 VARCHAR(20),
-  mor_campo_5 VARCHAR(20),
-  mor_campo_6 VARCHAR(20),
-  mor_campo_7 VARCHAR(20),
-  mor_campo_8 VARCHAR(20),
-  mor_ant_fecha VARCHAR(10),
-  mor_archivo VARCHAR(72),
+  mor_cargo_fuente VARCHAR(3) DEFAULT 'BOL',
+  mor_ant_codigo VARCHAR(3) DEFAULT 'XXX',
+  mor_campo_1 VARCHAR DEFAULT '',
+  mor_campo_2 VARCHAR DEFAULT '',
+  mor_campo_3 VARCHAR DEFAULT '',
+  mor_campo_4 VARCHAR DEFAULT '',
+  mor_campo_5 VARCHAR DEFAULT '',
+  mor_campo_6 VARCHAR DEFAULT '',
+  mor_campo_7 VARCHAR DEFAULT '',
+  mor_campo_8 VARCHAR DEFAULT '',
+  mor_ant_fecha VARCHAR(10) DEFAULT '',
+  mor_archivo VARCHAR(72) DEFAULT '',
   mor_soc_categoria VARCHAR(3),
   fecha_insercion_boletin VARCHAR,
   boletin_oficial BYTEA
 );
 
 ALTER TABLE sociedad ADD FOREIGN KEY (mor_sexo_id) REFERENCES sexo(id);
+ALTER TABLE sociedad ADD FOREIGN KEY (mor_prov_doc2_id) REFERENCES provincias(id);
 ALTER TABLE sociedad ADD FOREIGN KEY (mor_prov_id) REFERENCES provincias(id);
 ALTER TABLE sociedad ADD FOREIGN KEY (mor_est_civil_id) REFERENCES estado_civil(id);
 ALTER TABLE sociedad ADD FOREIGN KEY (mor_nacionalidad_id) REFERENCES nacionalidades(id);
