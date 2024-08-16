@@ -13,9 +13,9 @@ services:
     restart: "no"
     environment:
       - PORT=8083
-      - DB_HOST=postgresql-host
+      - DB_HOST=postgresql-host    
       - DB_PORT=5432
-      - DB_DATABASE=boletinesoficiales
+      - DB_DATABASE=boletinesprueba
       - DB_USERNAME=postgres
       - DB_PASSWORD=Password12345
     depends_on:
@@ -37,20 +37,20 @@ services:
     volumes:
       - ./NLP-boletines-oficiales:/var/sources/NLP-boletines-oficiales
 
-  postgresql:
-    container_name: postgresql-host
-    build:
-      context: .
-      dockerfile: data/Dockerfile
-    restart: "no"
-    environment:
-      - POSTGRES_DB=boletinesoficiales
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Password12345
-    ports:
-      - "5432:5432"
-    networks:
-      - boletines-oficiales-network
+#  postgresql:
+#    container_name: postgresql-host
+#    build:
+#      context: .
+#      dockerfile: data/Dockerfile
+#    restart: "no"
+#    environment:
+#      - POSTGRES_DB=boletinesoficiales
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=Password12345
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - boletines-oficiales-network
 
 networks:
   boletines-oficiales-network:
