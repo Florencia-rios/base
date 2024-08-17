@@ -4,27 +4,33 @@ services:
 
   boletines-oficiales:
     ports:
-      - "8083:8083"
+      - "8080:8080"
     build:
       context: ./BACK-boletines-oficiales
+      dockerfile: Dockerfile
     container_name: boletines-oficiales
     networks:
       - boletines-oficiales-network
     restart: "no"
     environment:
-      - PORT=8083
-      - DB_HOST=postgresql-host
-      - DB_PORT=5432
-      - DB_DATABASE=boletinesoficiales
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=Password12345
+      - PORT=8080
+      - DB_HOST=
+      - DB_PORT=
+      - DB_DATABASE=
+      - DB_USERNAME=
+      - DB_PASSWORD=
+    ##variables de servicio nlp
+      - NLP_SRV_URL=http://localhost:5000/api
+      - NLP_SRV_ENTIDAD_BO=/entidades/bo
+      - NLP_SRV_ENTIDAD_SOC=/entidades/soc
+      - NLP_SRV_ARCHIVOS=/csv
     depends_on:
       postgresql-host:
         condition: service_healthy
 
   nlp-boletines-oficiales:
     ports:
-      - "8084:8080"
+      - "5000:5000"
     build:
       context: .
       dockerfile: ./NLP-boletines-oficiales/Dockerfile
@@ -33,27 +39,53 @@ services:
       - boletines-oficiales-network
     restart: "no"
     environment:
+      #MODIFICACIONES NECESARIAS PARA ENCRIPTADO DE VALOR (*)
+      #(*) echo "[VALOR_PARA_OCULTAR]" | docker secret create my_secret_password -
       - OPENAI_API_KEY=drios_api_key
     volumes:
       - ./NLP-boletines-oficiales:/app/NLP-boletines-oficiales
+    #(*)secret:
+    #   - my_secret_password
 
-  postgresql-host:
-    container_name: postgresql-host
+#  postgresql-host:
+#    container_name: postgresql-host
+#    build:
+#      context: .
+#      dockerfile: data/Dockerfile
+#    restart: "no"
+#    environment:
+#      - POSTGRES_DB=boletinesoficiales
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=bDK2zNRO104v3gO7WVMa
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - boletines-oficiales-network
+#    volumes:
+#      - db_data:/var/lib/postgresql/data
+#      - ./data/init-sql.sql:/docker-entrypoint-initdb.d/init-sql.sql
+
+  nginx_server:
+    container_name: nginx_server
     build:
       context: .
-      dockerfile: data/Dockerfile
-    restart: "no"
-    environment:
-      - POSTGRES_DB=boletinesoficiales
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Password12345
+      dockerfile: Nginx-config/Dockerfile
     ports:
-      - "5432:5432"
+      - "80:80"
+    volumes:
+      - ./NLP-boletines-oficiales/src/static/:/usr/share/nginx/html/static
+      - ./NLP-boletines-oficiales/src/templates/:/usr/share/nginx/html/templates
     networks:
       - boletines-oficiales-network
-    volumes:
-      - db_data:/var/lib/postgresql/data
-      - ./data/init-sql.sql:/docker-entrypoint-initdb.d/init-sql.sql
+    depends_on:
+      - nlp-boletines-oficiales
+      - boletines-oficiales
+   #   - postgresql-host
+  
+  #(*)secrest:
+  #     my_secret_password:
+  #       external: true
+
 networks:
   boletines-oficiales-network:
     driver: bridge
