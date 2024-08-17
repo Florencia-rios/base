@@ -15,7 +15,7 @@ services:
     environment:
       - PORT=8080
       - DB_HOST=
-      - DB_PORT=
+      - DB_PORT=5432
       - DB_DATABASE=
       - DB_USERNAME=
       - DB_PASSWORD=
@@ -53,7 +53,7 @@ services:
 #    environment:
 #      - POSTGRES_DB=boletinesoficiales
 #      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=bDK2zNRO104v3gO7WVMa
+#      - POSTGRES_PASSWORD=
 #    ports:
 #      - "5432:5432"
 #    networks:
