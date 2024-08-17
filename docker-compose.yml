@@ -24,9 +24,6 @@ services:
       - NLP_SRV_ENTIDAD_BO=/entidades/bo
       - NLP_SRV_ENTIDAD_SOC=/entidades/soc
       - NLP_SRV_ARCHIVOS=/csv
-    depends_on:
-      postgresql-host:
-        condition: service_healthy
 
   nlp-boletines-oficiales:
     ports:
@@ -89,5 +86,5 @@ services:
 networks:
   boletines-oficiales-network:
     driver: bridge
-volumes:
-  db_data:
+#volumes:
+#  db_data:
