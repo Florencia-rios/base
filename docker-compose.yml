@@ -44,23 +44,23 @@ services:
     #(*)secret:
     #   - my_secret_password
 
-#  postgresql-host:
-#    container_name: postgresql-host
-#    build:
-#      context: .
-#      dockerfile: data/Dockerfile
-#    restart: "no"
-#    environment:
-#      - POSTGRES_DB=boletinesoficiales
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=
-#    ports:
-#      - "5432:5432"
-#    networks:
-#      - boletines-oficiales-network
-#    volumes:
-#      - db_data:/var/lib/postgresql/data
-#      - ./data/init-sql.sql:/docker-entrypoint-initdb.d/init-sql.sql
+  postgresql-host:
+    container_name: postgresql-host
+    build:
+      context: .
+      dockerfile: data/Dockerfile
+    restart: "no"
+    environment:
+      - POSTGRES_DB=boletinesoficiales
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=
+    ports:
+      - "5432:5432"
+    networks:
+      - boletines-oficiales-network
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./data/init-sql.sql:/docker-entrypoint-initdb.d/init-sql.sql
 
   nginx_server:
     container_name: nginx_server
@@ -69,9 +69,12 @@ services:
       dockerfile: Nginx-config/Dockerfile
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./NLP-boletines-oficiales/src/static/:/usr/share/nginx/html/static
       - ./NLP-boletines-oficiales/src/templates/:/usr/share/nginx/html/templates
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     networks:
       - boletines-oficiales-network
     depends_on:
@@ -82,6 +85,14 @@ services:
   #(*)secrest:
   #     my_secret_password:
   #       external: true
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 12h & wait $!; certbot renew; done'"
 
 networks:
   boletines-oficiales-network:
