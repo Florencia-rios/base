@@ -44,23 +44,23 @@ services:
     #(*)secret:
     #   - my_secret_password
 
-  postgresql-host:
-    container_name: postgresql-host
-    build:
-      context: .
-      dockerfile: data/Dockerfile
-    restart: "no"
-    environment:
-      - POSTGRES_DB=boletinesoficiales
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=
-    ports:
-      - "5432:5432"
-    networks:
-      - boletines-oficiales-network
-    volumes:
-      - db_data:/var/lib/postgresql/data
-      - ./data/init-sql.sql:/docker-entrypoint-initdb.d/init-sql.sql
+  #postgresql-host:
+  #  container_name: postgresql-host
+  #  build:
+  #    context: .
+  #    dockerfile: data/Dockerfile
+  #  restart: "no"
+  #  environment:
+  #    - POSTGRES_DB=boletinesoficiales
+  #    - POSTGRES_USER=postgres
+  #    - POSTGRES_PASSWORD=
+  #  ports:
+  #    - "5432:5432"
+  #  networks:
+  #    - boletines-oficiales-network
+  #  volumes:
+  #    - db_data:/var/lib/postgresql/data
+  #    - ./data/init-sql.sql:/docker-entrypoint-initdb.d/init-sql.sql
 
   nginx_server:
     container_name: nginx_server
@@ -97,5 +97,3 @@ services:
 networks:
   boletines-oficiales-network:
     driver: bridge
-#volumes:
-#  db_data:
