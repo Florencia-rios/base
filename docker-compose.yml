@@ -14,11 +14,11 @@ services:
     restart: "no"
     environment:
       - PORT=8080
-      - DB_HOST=
-      - DB_PORT=
-      - DB_DATABASE=
-      - DB_USERNAME=
-      - DB_PASSWORD=
+      - DB_HOST=postgresql-host
+      - DB_PORT=5432
+      - DB_DATABASE=boletinesoficiales
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=P0stgr3s
     ##variables de servicio nlp
       - NLP_SRV_URL=http://localhost:5000/api
       - NLP_SRV_ENTIDAD_BO=/entidades/bo
@@ -47,23 +47,23 @@ services:
     #(*)secret:
     #   - my_secret_password
 
-#  postgresql-host:
-#    container_name: postgresql-host
-#    build:
-#      context: .
-#      dockerfile: data/Dockerfile
-#    restart: "no"
-#    environment:
-#      - POSTGRES_DB=boletinesoficiales
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=bDK2zNRO104v3gO7WVMa
-#    ports:
-#      - "5432:5432"
-#    networks:
-#      - boletines-oficiales-network
-#    volumes:
-#      - db_data:/var/lib/postgresql/data
-#      - ./data/init-sql.sql:/docker-entrypoint-initdb.d/init-sql.sql
+  postgresql-host:
+    container_name: postgresql-host
+    build:
+      context: .
+      dockerfile: data/Dockerfile
+    restart: "no"
+    environment:
+      - POSTGRES_DB=boletinesoficiales
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=P0stgr3s
+    ports:
+      - "5432:5432"
+    networks:
+      - boletines-oficiales-network
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./data/init-sql.sql:/docker-entrypoint-initdb.d/init-sql.sql
 
   nginx_server:
     container_name: nginx_server
@@ -80,7 +80,7 @@ services:
     depends_on:
       - nlp-boletines-oficiales
       - boletines-oficiales
-   #   - postgresql-host
+      - postgresql-host
   
   #(*)secrest:
   #     my_secret_password:
