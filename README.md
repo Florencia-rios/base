@@ -21,5 +21,7 @@ Este es el repositorio (y directorio) que debe contener los otros microservicios
 # Nota
 Los puertos:
 - 8083
-- 8084
+- 8080
+- 5432
+
 serán expuestos y deben estar libres
