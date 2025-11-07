@@ -50,8 +50,8 @@ CREATE TABLE sociedad (
   mor_user VARCHAR(1),
   mor_nro_user VARCHAR(2) DEFAULT '62',
   mor_lote VARCHAR(1) DEFAULT '0',
-  mor_codint INT(2) NOT NULL,
-  mor_matriz VARCHAR(6) DEFAULT 'AA0029', INT,
+  mor_codint INT NOT NULL, -- tamaño 2
+  mor_matriz VARCHAR(6) DEFAULT 'AA0029',
   mor_sucursal VARCHAR(4) DEFAULT '9999',
   mor_sector VARCHAR(2),
   mor_cliente VARCHAR DEFAULT '',
@@ -102,34 +102,38 @@ ALTER TABLE sociedad ADD FOREIGN KEY (mor_cargo_id) REFERENCES cargos(id);
 INSERT INTO cargos (codigo, nombre) VALUES
 ('AB', 'ABSORBIDA'),
 ('GT', 'GERENTE'),
-('DT', 'DIRECTOR TITULAR'), -- *
-('PR', 'PRESIDENTE'), -- *
-('LR', 'REP. LEGAL'), -- *
-('SA', 'SOCIO SOLIDARIO'), -- *
-('SB', 'SOCIO COMANDITADO'), -- *
-('SC', 'SOCIO COMANDITARIO'), -- *
-('SG', 'SOCIO GERENTE'), -- *
-('SO', 'SOCIO'), -- *
-('ES', 'ESCINDIDA/ESCINDENTE'), -- *
-('V0', 'VICEPRESIDENTE'), -- *
-('V1', 'VICEPRESIDENTE 1'), -- *
-('V2', 'VICEPRESIDENTE 2'), -- *
-('V3', 'VICEPRESIDENTE 3'), -- *
-('V4', 'VICEPRESIDENTE 4'), -- *
-('V5', 'VICEPRESIDENTE 5'), -- **
-('FU', 'FUSIONADA'), -- *
-('UT', 'UTE')
-('DO', 'DIRECTIVO'), -- *
-*('CY', 'CONYUGE'), -- **
-('DN', 'DUENO'), -- **
-('DR', 'DIRECTOR'), -- **
-('SO', 'SOCIO'), -- **
-('TT', 'TITULAR'), -- **
-('LT', 'LIQUIDADOR TITULAR'), -- **
-('OT', 'RELACIONADO'), -- **
-('SK', 'SOCIO CAPITALISTA'), -- **
-('FZ', 'FISCALIZADOR') -- **
-('DA', 'DENOM.ANTERIOR/ACTUAL'), -- *
+('DT', 'DIRECTOR TITULAR'),
+('PR', 'PRESIDENTE'),
+('LR', 'REP. LEGAL'),
+('SA', 'SOCIO SOLIDARIO'),
+('SB', 'SOCIO COMANDITADO'),
+('SC', 'SOCIO COMANDITARIO'),
+('SG', 'SOCIO GERENTE'),
+('SO', 'SOCIO'),
+('ES', 'ESCINDIDA/ESCINDENTE'),
+('V0', 'VICEPRESIDENTE'),
+('V1', 'VICEPRESIDENTE 1'),
+('V2', 'VICEPRESIDENTE 2'),
+('V3', 'VICEPRESIDENTE 3'),
+('V4', 'VICEPRESIDENTE 4'),
+('V5', 'VICEPRESIDENTE 5'),
+('FU', 'FUSIONADA'),
+('UT', 'UTE'),
+('DO', 'DIRECTIVO'),
+('CY', 'CONYUGE'),
+('DN', 'DUENO'),
+('DR', 'DIRECTOR'),
+('SO', 'SOCIO'),
+('TT', 'TITULAR'),
+('LT', 'LIQUIDADOR TITULAR'),
+('OT', 'RELACIONADO'),
+('SK', 'SOCIO CAPITALISTA'),
+('FZ', 'FISCALIZADOR'),
+('DA', 'DENOM.ANTERIOR/ACTUAL'),
+('SD', 'SINDICO'),
+('SS', 'SINDICO SUPLENTE'),
+('DS', 'DIRECTOR SUPLENTE'),
+('AS', 'ADMINISTRADOR SUPLENTE')
 ;
 
 -- Inserts para la tabla estado_civil
