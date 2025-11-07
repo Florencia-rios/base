@@ -33,7 +33,7 @@ services:
       - boletines-oficiales-network
     restart: "no"
     environment:
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=drios_api_key
     volumes:
       - ./NLP-boletines-oficiales:/app/NLP-boletines-oficiales
 
