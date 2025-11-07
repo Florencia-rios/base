@@ -32,8 +32,6 @@ services:
     networks:
       - boletines-oficiales-network
     restart: "no"
-    environment:
-      - OPENAI_API_KEY=drios_api_key
     volumes:
       - ./NLP-boletines-oficiales:/app/NLP-boletines-oficiales
 
